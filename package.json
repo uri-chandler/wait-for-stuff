@@ -16,7 +16,8 @@
   "author": {
     "name": "Uri Chandler",
     "email": "uri@kungfoo.bar",
-    "url": "https://blog.kungfoo.bar",
+    "url": "https://blog.kungfoo.bar"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ujc/wait-for-stuff/issues"
@@ -24,6 +25,15 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ujc/wait-for-stuff.git"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.45",
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "deasync": "^0.1.8"
   }
 }
-
