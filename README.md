@@ -1,7 +1,6 @@
 # wait-for-stuff
 an extendable library that can wait for stuff to happen in a synchronous-but-not-blocking manner
-
-insteada of waiting for **`async\await`**, you can now simply wait for the following "stuff":
+instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
 
 * time
 * date
@@ -12,7 +11,7 @@ insteada of waiting for **`async\await`**, you can now simply wait for the follo
 * value
 * property
 
-*(generators and callbacks coming soon)*
+*(generators and node-style callbacks coming soon)*
 
 ---
 ## Why ?
@@ -36,7 +35,7 @@ var fileContents = wait.for.stream(myFile);
 ---
 ## Install
 ```
-npm install sync-rest-client
+npm install wait-for-stuff
 ```
 
 
@@ -49,7 +48,7 @@ this basically means that you can **write your code in a linear, sequential mann
 
 ---
 ## Built-in waiters
-wait-for-stuff is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to wait for based on your own custom logic.
+`wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.
 
 that said, it also comes with the following built-in waiters
 
@@ -59,9 +58,9 @@ that said, it also comes with the following built-in waiters
 wait.for.time(3);
 // 3 seconds have now passed
 ```
+<br /><br /><br />
 
-
-**`wait.for.promise(promise)`** waits until `promise` is settled (either resolved or rejected). returns that the promise was settled with.
+**`wait.for.promise(promise)`** waits until `promise` is settled (either resolved or rejected). returns the value that the promise was settled with.
 
 ```javascript
 var resultOrError = wait.for.promise(new Promise(...));
