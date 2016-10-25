@@ -1,6 +1,6 @@
 {
   "name": "wait-for-stuff",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "an extendable library that can wait for stuff to happen in a synchronous-but-not-blocking manner",
   "main": "index.js",
   "scripts": {
