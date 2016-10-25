@@ -197,7 +197,6 @@ If you would like to have your waiter middlware added as a built-in to `wait-for
 ---
 ## Test
 ```
-<br /><br />
 npm run test
 ```
 <br /><br />
