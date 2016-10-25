@@ -36,10 +36,8 @@ var fileContents = wait.for.stream(myFile);
 ---
 ## Install
 ```
-<br /><br />
 npm install wait-for-stuff
 ```
-<br /><br />
 
 
 ---
