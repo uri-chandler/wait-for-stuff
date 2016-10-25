@@ -81,6 +81,7 @@ wait.for.predicate(() => isDone);
 ```
 <br /><br />
 **`wait.for.condition`** same as `wait.for.predicate`. this is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"
+<br /><br />
 
 
 **`wait.for.value(owner, property, valueToWaitFor)`** waits until the `owner[property]` matches `valueToWaitFor`.
