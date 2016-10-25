@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ujc/wait-for-stuff.svg?branch=master)](https://travis-ci.org/ujc/wait-for-stuff)
+
 # wait-for-stuff
 an extendable library that can wait for stuff to happen in a synchronous-but-not-blocking manner
 instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
