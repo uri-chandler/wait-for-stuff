@@ -30,13 +30,16 @@ var fileContents = wait.for.stream(myFile);
 
 // feel free to do something with the file contents now
 ```
+<br /><br />
 
 
 ---
 ## Install
 ```
+<br /><br />
 npm install wait-for-stuff
 ```
+<br /><br />
 
 
 ---
@@ -58,13 +61,15 @@ that said, it also comes with the following built-in waiters
 wait.for.time(3);
 // 3 seconds have now passed
 ```
-<br /><br /><br />
+<br /><br />
+
 
 **`wait.for.promise(promise)`** waits until `promise` is settled (either resolved or rejected). returns the value that the promise was settled with.
 
 ```javascript
 var resultOrError = wait.for.promise(new Promise(...));
 ```
+<br /><br />
 
 
 **`wait.for.predicate(fn)`** waits until the `predicate` function returns a truthy value. this is useful if you need a simple mechanism to wait on your own custom application logic
@@ -76,6 +81,7 @@ setTimeout(() => isDone = true, 5000);
 wait.for.predicate(() => isDone);
 // [5 seconds later]: isDone is now true, execution continues
 ```
+<br /><br />
 **`wait.for.condition`** same as `wait.for.predicate`. this is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"
 
 
@@ -92,6 +98,7 @@ setTimeout(() => myObject.foo = '123', 5000);
 wait.for.value(myObject, 'foo', '123');
 // [5 seconds later]: myObject.foo now equals '123'
 ```
+<br /><br />
 
 
 
@@ -108,6 +115,7 @@ setTimeout(() => myObject.foo = true, 5000);
 wait.for.property(myObject, 'foo');
 // [5 seconds later]: myObject now has a property named 'foo'
 ```
+<br /><br />
 
 
 **`wait.for.event(emitter, eventName)`** waits until `emitter` emits the `eventName` event. returns the data that the event emitted (if any).
@@ -120,6 +128,7 @@ var eventData = wait.for.event(myEmitter, 'someEvent');
 // if the event was emitted with multiple data arguments,
 // <eventData> will be an array with those data arguments
 ```
+<br /><br />
 
 
 
@@ -132,6 +141,7 @@ var theFuture = new Date( new Date().getTime() + 5000 );
 wait.for.date(theFuture);
 // we are now in the future (though just by 5 seconds, so no biggy)
 ```
+<br /><br />
 
 
 **`wait.for.stream(readableStream)`** waits until `readableStream` has been fully read (ended). returns the data that was read from the stream (either as `string` or `buffer`, based on what the stream emitted as it's chunks)
@@ -141,6 +151,7 @@ var myFile       = fs.createReadStream('someFile.json');
 var fileContents = wait.for.stream(myFile);
 // fileContents now contains the contents of someFile.json
 ```
+<br /><br />
 
 
 ---
@@ -165,6 +176,7 @@ wait.use('minutes', minutes => {
 wait.for.minutes(2);
 // [2 minutes later]: code execution continues
 ```
+<br /><br />
 
 **note** you can also use this api to overwrite existing waiters with your own logic. while this is not recommended, it is possible.
 
@@ -186,8 +198,10 @@ If you would like to have your waiter middlware added as a built-in to `wait-for
 ---
 ## Test
 ```
+<br /><br />
 npm run test
 ```
+<br /><br />
 
 
 ---
