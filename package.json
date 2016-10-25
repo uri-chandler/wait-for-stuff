@@ -13,6 +13,17 @@
     "sync",
     "synchronous"
   ],
-  "author": "Uri Chandler",
-  "license": "MIT"
+  "author": {
+    "name": "Uri Chandler",
+    "email": "uri@kungfoo.bar",
+    "url": "https://blog.kungfoo.bar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ujc/wait-for-stuff/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ujc/wait-for-stuff.git"
+  }
 }
+
