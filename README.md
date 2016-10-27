@@ -16,7 +16,7 @@ instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **generator** *(wait for `generator` to fully exhaust all values)*
 
 
-* (node-style callbacks coming soon)*
+* *(node-style callbacks coming soon)*
 
 ---
 ## Why ?
