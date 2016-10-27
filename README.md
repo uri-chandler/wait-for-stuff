@@ -4,16 +4,19 @@
 an extendable library that can wait for stuff to happen in a synchronous-but-not-blocking manner
 instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
 
-* time
-* date
-* event
-* predicate
-* promise
-* stream
-* value
-* property
+* **time** *(wait for x seconds to pass)*
+* **date** *(wait until `date` is reached)*
+* **event** *(wait until `event` emits)*
+* **predicate** *(wait until `prediacte` returns true)*
+* **promise** *(wait for `promise` to settle)*
+* **stream** *(wait until `readable-stream` is fully read)*
+* **value** *(wait for `object.property` to equal `value`)*
+* **property** *(wait for `object.property` to exist)*
+* **yield** *(wait for a generator to `yield` a speific value)*
+* **generator** *(wait for `generator` to fully exhaust all values)*
 
-*(generators and node-style callbacks coming soon)*
+
+* (node-style callbacks coming soon)*
 
 ---
 ## Why ?
@@ -153,6 +156,70 @@ var fileContents = wait.for.stream(myFile);
 // fileContents now contains the contents of someFile.json
 ```
 <br /><br />
+
+
+
+
+**`wait.for.yield(generator, value)`** waits until the `generator` has yielded the specified `value`.
+
+`generator` can either be a generator-function, or an actuale iterable-generator *(the result of a generator-function)*
+
+```javascript
+function* myGeneratorFunction(){
+    count = 0;
+    while (true) { yield ++count }
+}
+
+wait.for.yield(myGeneratorFunction, 5);
+// count is now 5
+
+
+//////////////////////////////////////////////////////
+// alternative (pass in the actual iterable-generator)
+function* myGeneratorFunction(){
+    count = 0;
+    while (true) { yield ++count }
+}
+
+var iterable = myGeneratorFunction();
+
+wait.for.yield(iterable, 5);
+```
+<br /><br />
+
+
+
+
+**`wait.for.generator(generator)`** waits until the `generator` has fully exhausted all of it's yielded values. returns the value that the generator function returns.
+
+`generator` can either be a generator-function, or an actuale iterable-generator *(the result of a generator-function)*
+
+```javascript
+function* myGeneratorFunction(){
+    count = 0;
+    while (count < 10) { yield ++count }
+    return 'complete!';
+}
+
+var result = wait.for.generator(myGeneratorFunction);
+// result === 'complete!'
+
+
+//////////////////////////////////////////////////////
+// alternative (pass in the actual iterable-generator)
+function* myGeneratorFunction(){
+    count = 0;
+    while (count < 10) { yield ++count }
+    return 'complete!';
+}
+
+var iterable = myGeneratorFunction();
+var result   = wait.for.generator(iterable);
+// result === 'complete!'
+```
+<br /><br />
+
+
 
 
 ---

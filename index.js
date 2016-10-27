@@ -122,7 +122,6 @@ $wait.use('time', seconds => {
     }, 25);
 
     deasync.loopWhile(() => !isDone);
-    return;
 });
 
 $wait.use('promise', promise => {
@@ -138,18 +137,24 @@ $wait.use('promise', promise => {
 });
 
 $wait.use('predicate', predicate => {
-    deasync.loopWhile(() => !predicate());
-    return;
+    var isDone = false;
+
+    deasync.loopWhile(() => {
+        if (isDone){
+            return false;
+        }
+
+        isDone = predicate();
+        return !isDone;
+    });
 });
 
 $wait.use('value', (owner, propertyName, valueToWaitFor) => {
     deasync.loopWhile(() => owner[propertyName] !== valueToWaitFor);
-    return;
 });
 
 $wait.use('property', (owner, property) => {
     deasync.loopWhile(() => (property in owner) === false);
-    return;
 });
 
 $wait.use('event', (emitter, eventName) => {
@@ -167,7 +172,6 @@ $wait.use('event', (emitter, eventName) => {
 
 $wait.use('date', date => {
     deasync.loopWhile(() => new Date().getTime() < date.getTime() );
-    return;
 });
 
 $wait.use('stream', readableStream => {
@@ -190,6 +194,45 @@ $wait.use('stream', readableStream => {
     return data;
 });
 
+$wait.use('yield', (generator, value) => {
+    var nextValue = null;
+    var isDone    = false;
+
+    if (typeof generator === 'function') {
+        generator = generator();
+    }
+
+    deasync.loopWhile(() => {
+        if (nextValue === value) {
+            isDone = true;
+        }
+
+        if (isDone){
+            return false;
+        }
+        else {
+            nextValue = generator.next().value;
+            return true;
+        }
+    });
+
+    return nextValue;
+});
+
+$wait.use('generator', generator => {
+    var nextValue = null;
+
+    if (typeof generator === 'function') {
+        generator = generator();
+    }
+
+    deasync.loopWhile(() => {
+        nextValue = generator.next();
+        return !nextValue.done;
+    });
+
+    return nextValue.value;
+});
 
 // as a convenience, we add 'condition' as an alias to 'predicate'
 $wait.alias('predicate', 'condition');

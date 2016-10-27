@@ -103,4 +103,38 @@ describe('wait-for-stuff', function(){
 
         buffer.toString().should.match(/wait-for-stuff/);
     });
+
+    it('waits-for: yield', () => {
+        var count = 0;
+
+        function* myGenerator(){
+            while (true) { yield ++count }
+        }
+
+        wait.for.yield(myGenerator, 3);
+        count.should.equal(3);
+    });
+
+    it('waits-for: generator', () => {
+        function* myGenerator(){
+            var count;
+            while (count++ < 5) { yield count }
+            return 'foo';
+        }
+
+        var value = wait.for.generator(myGenerator);
+        value.should.equal('foo');
+    });
+
+    it('waits-for: generator (as iterable)', () => {
+        function* myGenerator(){
+            var count;
+            while (count++ < 5) { yield count }
+            return 'foo';
+        }
+
+        var iterable = myGenerator();
+        var value    = wait.for.generator(iterable);
+        value.should.equal('foo');
+    });
 });
