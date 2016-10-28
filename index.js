@@ -234,6 +234,32 @@ $wait.use('generator', generator => {
     return nextValue.value;
 });
 
+$wait.use('callback', (nodeAsyncFunction, ...args) => {
+    var isDone = false;
+    var result = null;
+
+    nodeAsyncFunction(...args, (...resultSet) => {
+        result = resultSet.filter(r => r !== null && r !== undefined);
+        isDone = true;
+    });
+
+    deasync.loopWhile(() => !isDone);
+    return result.length > 1 ? result : result[0]
+});
+
+$wait.use('function', (customAsyncFunction, ...args) => {
+    var isDone = false;
+    var result = null;
+
+    customAsyncFunction(...args, (...resultSet) => {
+        result = resultSet;
+        isDone = true;
+    });
+
+    deasync.loopWhile(() => !isDone);
+    return result;
+});
+
 // as a convenience, we add 'condition' as an alias to 'predicate'
 $wait.alias('predicate', 'condition');
 ///////////////////////////////////////////////////////////

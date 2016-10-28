@@ -14,9 +14,11 @@ instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **property** *(wait for `object.property` to exist)*
 * **yield** *(wait for a generator to `yield` a speific value)*
 * **generator** *(wait for `generator` to fully exhaust all values)*
+* **callback** *(wait for node-style `callback` to be called)*
+* **function** *(wait for custom callback `function` to be called)*
 
 
-* *(node-style callbacks coming soon)*
+* *(composable \ chainable \ follow-through waiters are coming soon)*
 
 ---
 ## Why ?
@@ -221,12 +223,67 @@ var result   = wait.for.generator(iterable);
 
 
 
+**`wait.for.callback(nodeAsyncFunction, ...params)`** waits until the `nodeAsyncFunction` has finished, passing to it any `params` that you supply.
+
+**note:** with node-style callbacks, there's usually an `error` as the first argument, and any possible `data` argument comes after that. either of these might will be null if the other isn't, and there can be more than one `data` argument. `wait.for.callback` will make an attempt to simplify the result value when possible.
+
+**see also:** **`wait.for.function`** *(below)*
+
+```javascript
+// instead of this:
+// -----------------------------------------------
+// fs.readFile('foo.json', function(err, data){
+//     do something with err or data
+// });
+// -----------------------------------------------
+
+var errOrData = wait.for.callback(fs.readFile, 'foo.json');
+
+
+///////////////////////////////////////////////////////
+// or, if unlike fs.readFile, the function may pass
+// more than just "err" or "data":
+
+// instead of this:
+// moreComplexFunc('foo.json', function(err, data1, data2, data3){
+//     do something with err, or data1 + data2 + data3
+// });
+
+var errOrResultSet = wait.for.callback(moreComplexFunc, 'foo.json');
+
+// errOrResultSet will either be 'err',
+// or an array containing [data1, data2, data3] in order
+```
+<br /><br />
+
+
+
+
+**`wait.for.function(customAsyncFunction, ...params)`** waits until the `customAsyncFunction` has finished, passing to it any `params` that you supply.
+
+unlike `wait.for.callback`, any arguments that were passed into the callback will be returned as the complete `resultSet` of the `customAsyncFunction`
+
+```javascript
+// instead of this:
+// -----------------------------------------------
+// fs.readFile('foo.json', function(err, data){
+//     do something with err or data
+// });
+// -----------------------------------------------
+
+var resultSet = wait.for.function(fs.readFile, 'foo.json');
+
+// resultSet is an array of [err, data] in order
+```
+<br /><br />
+
+
 
 ---
 ## Middleware
 this library tries to provide atomic structures with the built-in waiters. from these basic waiters, you should be able to construct any custom waiter for anything you can think of *(and I sure hope you will).*
 
-once you've built your own waiter-middleware, you can add it to `wait-for-stuff` using the **`wait.use(middleware)`** api.
+once you've built your own waiter-middleware, you can add it to `wait-for-stuff` using the **`wait.use(name, middleware)`** api.
 
 **`wait.use(name, middleware)`** adds `middleware` as an additional waiter to `wait-for-stuff` under **`wait.for.<name>`**.
 

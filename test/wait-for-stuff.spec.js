@@ -137,4 +137,18 @@ describe('wait-for-stuff', function(){
         var value    = wait.for.generator(iterable);
         value.should.equal('foo');
     });
+
+    it('waits-for: callback', () => {
+        var result = wait.for.callback(fs.readFile, __filename);
+        result.toString().should.include('waits-for: callback');
+    });
+
+    it('waits-for: function', () => {
+        var resultSet = wait.for.function(fs.readFile, __filename);
+        var error     = resultSet[0];
+        var buffer    = resultSet[1];
+
+        should.not.exist(error);
+        buffer.toString().should.include('waits-for: function');
+    });
 });
