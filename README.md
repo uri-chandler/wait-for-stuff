@@ -16,9 +16,9 @@ instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **generator** *(wait for `generator` to fully exhaust all values)*
 * **callback** *(wait for node-style `callback` to be called)*
 * **function** *(wait for custom callback `function` to be called)*
+* **compose** *(compose a new waiter from two or more existing waiters)*
 
-
-* *(composable \ chainable \ follow-through waiters are coming soon)*
+* *(chainable \ follow-through waiters are coming soon)*
 
 ---
 ## Why ?
