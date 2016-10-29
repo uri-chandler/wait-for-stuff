@@ -16,6 +16,7 @@ instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **generator** *(wait for `generator` to fully exhaust all values)*
 * **callback** *(wait for node-style `callback` to be called)*
 * **function** *(wait for custom callback `function` to be called)*
+* **array** *(wait for `array` to contain some value)*
 * **compose** *(compose a new waiter from two or more existing waiters)*
 
 * *(chainable \ follow-through waiters are coming soon)*
@@ -274,6 +275,19 @@ unlike `wait.for.callback`, any arguments that were passed into the callback wil
 var resultSet = wait.for.function(fs.readFile, 'foo.json');
 
 // resultSet is an array of [err, data] in order
+```
+<br /><br />
+
+
+
+
+**`wait.for.array(array, value)`** waits until `array` contains `value`
+
+```javascript
+var myArray = [];
+setTimeout(() => myArray.push('hello world'), 1000);
+
+wait.for.array(myArray, 'hello world');
 ```
 <br /><br />
 

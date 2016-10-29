@@ -152,6 +152,13 @@ describe('wait-for-stuff', function(){
         buffer.toString().should.include('waits-for: function');
     });
 
+    it('waits-for: array', () => {
+        var myArray = [];
+        setTimeout(() => myArray.push('hello world'), 1000);
+        wait.for.array(myArray, 'hello world');
+        myArray.should.contain('hello world');
+    });
+
     it('extension: middleware', () => {
         wait.use('twoSeconds', () => {
             wait.for.time(2);

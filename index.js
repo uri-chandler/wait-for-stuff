@@ -108,18 +108,6 @@ var $wait = {
 // the following are the built-in waiters that come with
 // the wait-for-stuff module
 //
-// - time           (wait x seconds)
-// - date           (wait for some future date)
-// - promise        (wait for promise to settle)
-// - predicate      (wait for predicate function to return true)
-// - value          (wait for value to match)
-// - property       (wait for property to exist)
-// - event          (wait for event to be emitted)
-// - stream         (wait for a readable stream to end)
-//
-// * generator      (coming soon)
-// * callback       (coming soon)
-//
 // each of these are added to the main $wait module by
 // calling the ".use(waiter-middleware)" api of the main
 // wait-for-stuff object ($wait)
@@ -282,6 +270,10 @@ $wait.use('function', (customAsyncFunction, ...args) => {
 
     deasync.loopWhile(() => !isDone);
     return result;
+});
+
+$wait.use('array', (array, value) => {
+    deasync.loopWhile(() => !array.includes(value));
 });
 
 // as a convenience, we add 'condition' as an alias to 'predicate'
