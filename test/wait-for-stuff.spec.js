@@ -151,4 +151,37 @@ describe('wait-for-stuff', function(){
         should.not.exist(error);
         buffer.toString().should.include('waits-for: function');
     });
+
+    it('extension: middleware', () => {
+        wait.use('twoSeconds', () => {
+            wait.for.time(2);
+        });
+
+        wait.for.twoSeconds.should.be.a('function');
+
+        var start = new Date().getTime();
+        wait.for.twoSeconds();
+        var end = new Date().getTime();
+
+        (end - start).should.be.above(1999);
+    });
+
+    it('extension: alias', () => {-
+        wait.alias('time', 'anotherTime');
+        wait.for.anotherTime.should.equal(wait.for.time);
+    });
+
+    it('extension: compose', () => {
+        function myComplexFunction(path, callback){
+            fs.exists(path, result => {
+                var stream = fs.createReadStream(path);
+                callback(stream);
+            });
+        };
+
+        var streamAndCallback = wait.compose('stream', 'callback');
+        var result            = streamAndCallback(myComplexFunction, __filename);
+
+        result.toString().should.include('extension: compose');
+    });
 });

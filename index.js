@@ -72,6 +72,30 @@ var $wait = {
         if (this.for[originalName]){
             this.for[alias] = this.for[originalName];
         }
+    },
+
+    compose: function compose(...waiters){
+        waiters.reverse();
+
+        // first, let's make sure that all the requested waiters really exist,
+        // otherwise the user might get bad side-effects
+        waiters.forEach(waiter => {
+            if (typeof this.for[waiter] !== 'function'){
+                throw new Error(`wait.compose() :: cannot compose unknown waiter "${waiter}"`);
+            }
+        });
+
+        // the composed function simply passes the result from each waiter to the next,
+        // and once all waiters have completed we extract the final return value and return that
+        return function(...args){
+            var result = args;
+
+            waiters.forEach(waiter => {
+                result = [$wait.for[waiter].apply(null, result)];
+            });
+
+            return result[0];
+        }
     }
 };
 ///////////////////////////////////////////////////////////

@@ -310,6 +310,44 @@ wait.for.minutes(2);
 **`wait.alias(originalName, alias)`** allows you to create an alias of your own liking to some waiter. for example, the built-in **`wait.for.condition`** waiter is just an alias to **`wait.for.predicate`**.
 
 
+
+
+---
+## Composition
+you can compose your own "complex" waiter by combining the work of two or more waiters.
+this is done by calling `wait.compose(waiter1, waiter2, ...waiterN)`. the result is a new waiter that passes
+the return value from each waiter to the next, until all waiters have completed.
+
+**`wait.compose(waiter1, waiter2, ...waiterN)`** composes a new waiter from the waiters that are passed in.
+waiters are exhausted from right-to-left - just like you would expect from the functionl-programming `compose` function
+
+```javascript
+function myComplexFunction(path, callback){
+    fs.exists(path, result => {
+        var stream = fs.createReadStream(path);
+        callback(stream);
+    });
+};
+
+// first we create a composed waiter
+// it will first expect the arguments that should be passed into wait.for.callback.
+// the result of wait.for.callback is then passed into wait.for.stream.
+// the final result is what wait.for.stream will have returned
+//
+// in our case, myComplexFunction() expects a callback, which then gets a stream
+// composition allows us to wait on both 'waiters'
+var streamAndCallbackWaiter = wait.compose('stream', 'callback');
+var result                  = streamAndCallback(myComplexFunction, __filename); // arguments for wait.for.callback
+
+// result is the return value from wait.for.stream
+result.toString().should.include('extension: compose');
+```
+<br /><br />
+
+
+
+
+
 --
 ## Contribute
 I hope many people will find this module helpful - either as an alternative to asynchronous flow-execution patterns such as await\async (while we wait) etc.. - or as a supplement to go along with what ever you're allready using.
