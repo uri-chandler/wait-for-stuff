@@ -40,14 +40,14 @@ var fileContents = wait.for.stream(myFile);
 <br /><br />
 
 
----
+
 ## Install
 ```
 npm install wait-for-stuff
 ```
 
 
----
+
 ## How it works
 behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.
 
