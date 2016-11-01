@@ -78,7 +78,7 @@ Because I'm tired of waiting for `await\async`, and want this code to work
 >
 >// feel free to do something with the file contents now
 >```
-
+<br /><br />
 
 
 [//]: # (----------------------------------------------------)
@@ -88,7 +88,7 @@ Because I'm tired of waiting for `await\async`, and want this code to work
 >```
 >npm install wait-for-stuff
 >```
-
+<br /><br />
 
 
 [//]: # (----------------------------------------------------)
@@ -97,7 +97,7 @@ Because I'm tired of waiting for `await\async`, and want this code to work
 ## <a id="how-it-works">[#](#how-it-works)</a> How it works
 Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
 This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
-
+<br /><br />
 
 
 
@@ -502,10 +502,10 @@ If you would like to have your waiter middlware added as a built-in to `wait-for
 [//]: # (----------------------------------------------------)
 ---
 ## Test
-```
-npm run test
-```
-<br />
+>```
+>npm run test
+>```
+<br /><br /><br />
 
 
 
