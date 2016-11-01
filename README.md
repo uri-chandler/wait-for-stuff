@@ -64,36 +64,36 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 Because I'm tired of waiting for `await\async`, and want this code to work  
 *(without blocking node's event-loop)*:
 
-```javascript
-var fs   = require('fs');
-var wait = require('wait-for-stuff');
-
-var myFile   = fs.createReadStream('my.json');
-var contents = wait.for.stream(myFile);
-
-// the stream has now been fully read, async in the
-// background while my code is still nice-and-pretty, without
-// worrying about async-code-execution-flow design patterns
-// and such
-
-// feel free to do something with the file contents now
-```
+>```javascript
+>var fs   = require('fs');
+>var wait = require('wait-for-stuff');
+>
+>var myFile   = fs.createReadStream('my.json');
+>var contents = wait.for.stream(myFile);
+>
+>// the stream has now been fully read, async in the
+>// background while my code is still nice-and-pretty, without
+>// worrying about async-code-execution-flow design patterns
+>// and such
+>
+>// feel free to do something with the file contents now
+>```
 
 
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
----
+
 ## <a id="install">[#](#install)</a> Install
-```
-npm install wait-for-stuff
-```
+>```
+>npm install wait-for-stuff
+>```
 
 
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
----
+
 ## <a id="how-it-works">[#](#how-it-works)</a> How it works
 Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
 This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
@@ -115,10 +115,10 @@ That said, it also comes with the following built-in waiters:
 **`wait.for.time(seconds)`**  
 Waits until `seconds` number of seconds pass
 
-```javascript
-wait.for.time(3);
-// 3 seconds have now passed
-```
+>```javascript
+>wait.for.time(3);
+>// 3 seconds have now passed
+>```
 <br />
 
 
@@ -131,11 +131,11 @@ Waits until the system time passes the date of `futureDateObject`.
 `futureDateObject` must be a `Date` object.  
 If `futureDateObject` is configured as a date that has already passed the waiting will simply end immediately.
 
-```javascript
-var theFuture = new Date( new Date().getTime() + 5000 );
-wait.for.date(theFuture);
-// we are now in the future (though just by 5 seconds, so no biggy)
-```
+>```javascript
+>var theFuture = new Date( new Date().getTime() + 5000 );
+>wait.for.date(theFuture);
+>// we are now in the future (though just by 5 seconds, so no biggy)
+>```
 <br />
 
 
@@ -147,14 +147,14 @@ wait.for.date(theFuture);
 Waits until `emitter` emits the `eventName` event.  
 Returns the data that the event emitted (if any).
 
-```javascript
-var eventData = wait.for.event(myEmitter, 'someEvent');
-// if the event was emitted with just a single data argument,
-// <eventData> will get that value
-
-// if the event was emitted with multiple data arguments,
-// <eventData> will be an array with those data arguments
-```
+>```javascript
+>var eventData = wait.for.event(myEmitter, 'someEvent');
+>// if the event was emitted with just a single data argument,
+>// <eventData> will get that value
+>
+>// if the event was emitted with multiple data arguments,
+>// <eventData> will be an array with those data arguments
+>```
 <br />
 
 
@@ -166,13 +166,13 @@ var eventData = wait.for.event(myEmitter, 'someEvent');
 Waits until the `predicate` function returns a truthy value.  
 This is useful if you need a simple mechanism to wait on your own custom application logic
 
-```javascript
-var isDone = false;
-setTimeout(() => isDone = true, 5000);
-
-wait.for.predicate(() => isDone);
-// [5 seconds later]: isDone is now true, execution continues
-```
+>```javascript
+>var isDone = false;
+>setTimeout(() => isDone = true, 5000);
+>
+>wait.for.predicate(() => isDone);
+>// [5 seconds later]: isDone is now true, execution continues
+>```
 <br />
 
 
@@ -193,9 +193,9 @@ This is just a convenience alias in case you prefer to use the word "condition" 
 Waits until `promise` is settled (either resolved or rejected).  
 Returns the value that the promise was settled with.
 
-```javascript
-var resultOrError = wait.for.promise(new Promise(...));
-```
+>```javascript
+>var resultOrError = wait.for.promise(new Promise(...));
+>```
 <br />
 
 
@@ -211,29 +211,29 @@ Returns the value that the generator function returns.
 `generator` can either be a generator-function, or an actuale iterable-generator  
 *(the result of a generator-function)*
 
-```javascript
-function* myGeneratorFunction(){
-    count = 0;
-    while (count < 10) { yield ++count }
-    return 'complete!';
-}
-
-var result = wait.for.generator(myGeneratorFunction);
-// result === 'complete!'
-
-
-//////////////////////////////////////////////////////
-// alternative (pass in the actual iterable-generator)
-function* myGeneratorFunction(){
-    count = 0;
-    while (count < 10) { yield ++count }
-    return 'complete!';
-}
-
-var iterable = myGeneratorFunction();
-var result   = wait.for.generator(iterable);
-// result === 'complete!'
-```
+>```javascript
+>function* myGeneratorFunction(){
+>    count = 0;
+>    while (count < 10) { yield ++count }
+>    return 'complete!';
+>}
+>
+>var result = wait.for.generator(myGeneratorFunction);
+>// result === 'complete!'
+>
+>
+>//////////////////////////////////////////////////////
+>// alternative (pass in the actual iterable-generator)
+>function* myGeneratorFunction(){
+>    count = 0;
+>    while (count < 10) { yield ++count }
+>    return 'complete!';
+>}
+>
+>var iterable = myGeneratorFunction();
+>var result   = wait.for.generator(iterable);
+>// result === 'complete!'
+>```
 <br />
 
 
@@ -246,11 +246,11 @@ Waits until `readableStream` has been fully read (ended).
 Returns the data that was read from the stream  
 *(either as `string` or `buffer`, based on what the stream emitted as it's chunks)*
 
-```javascript
-var myFile       = fs.createReadStream('someFile.json');
-var fileContents = wait.for.stream(myFile);
-// fileContents now contains the contents of someFile.json
-```
+>```javascript
+>var myFile       = fs.createReadStream('someFile.json');
+>var fileContents = wait.for.stream(myFile);
+>// fileContents now contains the contents of someFile.json
+>```
 <br />
 
 
@@ -269,31 +269,31 @@ Last, if after this filtering there is only a single value in the array - that v
 
 **See also:** **<a id="wait-for-function">[#](#wait-for-function)</a> `wait.for.function()`**
 
-```javascript
-// instead of this:
-// -----------------------------------------------
-// fs.readFile('foo.json', function(err, data){
-//     do something with err or data
-// });
-// -----------------------------------------------
-
-var errOrData = wait.for.callback(fs.readFile, 'foo.json');
-
-
-///////////////////////////////////////////////////////
-// or, if unlike fs.readFile, the function may pass
-// more than just "err" or "data":
-
-// instead of this:
-// moreComplexFunc('foo.json', function(err, data1, data2, data3){
-//     do something with err, or data1 + data2 + data3
-// });
-
-var errOrResultSet = wait.for.callback(moreComplexFunc, 'foo.json');
-
-// errOrResultSet will either be 'err',
-// or an array containing [data1, data2, data3] in order
-```
+>```javascript
+>// instead of this:
+>// -----------------------------------------------
+>// fs.readFile('foo.json', function(err, data){
+>//     do something with err or data
+>// });
+>// -----------------------------------------------
+>
+>var errOrData = wait.for.callback(fs.readFile, 'foo.json');
+>
+>
+>///////////////////////////////////////////////////////
+>// or, if unlike fs.readFile, the function may pass
+>// more than just "err" or "data":
+>
+>// instead of this:
+>// moreComplexFunc('foo.json', function(err, data1, data2, data3){
+>//     do something with err, or data1 + data2 + data3
+>// });
+>
+>var errOrResultSet = wait.for.callback(moreComplexFunc, 'foo.json');
+>
+>// errOrResultSet will either be 'err',
+>// or an array containing [data1, data2, data3] in order
+>```
 <br />
 
 
@@ -306,18 +306,18 @@ Waits until the `customAsyncFunction` has finished, passing to it any `params` t
 
 Unlike `wait.for.callback()`, any-and-all arguments that were passed into the function will be returned as the complete `resultSet` of the `customAsyncFunction`.
 
-```javascript
-// instead of this:
-// -----------------------------------------------
-// fs.readFile('foo.json', function(err, data){
-//     do something with err or data
-// });
-// -----------------------------------------------
-
-var resultSet = wait.for.function(fs.readFile, 'foo.json');
-
-// resultSet is an array of [err, data] in order
-```
+>```javascript
+>// instead of this:
+>// -----------------------------------------------
+>// fs.readFile('foo.json', function(err, data){
+>//     do something with err or data
+>// });
+>// -----------------------------------------------
+>
+>var resultSet = wait.for.function(fs.readFile, 'foo.json');
+>
+>// resultSet is an array of [err, data] in order
+>```
 <br />
 
 
@@ -332,27 +332,27 @@ Waits until the `generator` has yielded the specified `value`.
 `generator` can either be a generator-function, or an actuale iterable-generator  
 *(the result of a generator-function)*
 
-```javascript
-function* myGeneratorFunction(){
-    count = 0;
-    while (true) { yield ++count }
-}
-
-wait.for.yield(myGeneratorFunction, 5);
-// count is now 5
-
-
-//////////////////////////////////////////////////////
-// alternative (pass in the actual iterable-generator)
-function* myGeneratorFunction(){
-    count = 0;
-    while (true) { yield ++count }
-}
-
-var iterable = myGeneratorFunction();
-
-wait.for.yield(iterable, 5);
-```
+>```javascript
+>function* myGeneratorFunction(){
+>    count = 0;
+>    while (true) { yield ++count }
+>}
+>
+>wait.for.yield(myGeneratorFunction, 5);
+>// count is now 5
+>
+>
+>//////////////////////////////////////////////////////
+>// alternative (pass in the actual iterable-generator)
+>function* myGeneratorFunction(){
+>    count = 0;
+>    while (true) { yield ++count }
+>}
+>
+>var iterable = myGeneratorFunction();
+>
+>wait.for.yield(iterable, 5);
+>```
 <br />
 
 
@@ -367,13 +367,13 @@ Waits until the `owner[property]` matches `valueToWaitFor`.
 `property` must be a string  
 `owner` must be an object
 
-```javascript
-var myObject = { foo: 'bar'};
-setTimeout(() => myObject.foo = '123', 5000);
-
-wait.for.value(myObject, 'foo', '123');
-// [5 seconds later]: myObject.foo now equals '123'
-```
+>```javascript
+>var myObject = { foo: 'bar'};
+>setTimeout(() => myObject.foo = '123', 5000);
+>
+>wait.for.value(myObject, 'foo', '123');
+>// [5 seconds later]: myObject.foo now equals '123'
+>```
 <br />
 
 
@@ -388,13 +388,13 @@ Waits until `owner` has a property named `property`
 `property` must be a string  
 `owner` must be an object
 
-```javascript
-var myObject = {};
-setTimeout(() => myObject.foo = true, 5000);
-
-wait.for.property(myObject, 'foo');
-// [5 seconds later]: myObject now has a property named 'foo'
-```
+>```javascript
+>var myObject = {};
+>setTimeout(() => myObject.foo = true, 5000);
+>
+>wait.for.property(myObject, 'foo');
+>// [5 seconds later]: myObject now has a property named 'foo'
+>```
 <br />
 
 
@@ -406,12 +406,12 @@ wait.for.property(myObject, 'foo');
 **`wait.for.array(array, value)`**  
 Waits until `array` contains `value`
 
-```javascript
-var myArray = [];
-setTimeout(() => myArray.push('hello world'), 1000);
-
-wait.for.array(myArray, 'hello world');
-```
+>```javascript
+>var myArray = [];
+>setTimeout(() => myArray.push('hello world'), 1000);
+>
+>wait.for.array(myArray, 'hello world');
+>```
 <br />
 
 
@@ -426,20 +426,20 @@ once you've built your own waiter-middleware, you can add it to `wait-for-stuff`
 
 **`wait.use(name, middleware)`** adds `middleware` as an additional waiter to `wait-for-stuff` under **`wait.for.<name>`**.
 
-```javascript
-var wait = require('wait-for-stuff');
-
-wait.use('minutes', minutes => {
-    wait.for.seconds(minutes * 60);
-    return;
-});
-
-
-// later on in your code, when you need to wait for X minutes
-// to pass - which totally makes sense in node applications (;
-wait.for.minutes(2);
-// [2 minutes later]: code execution continues
-```
+>```javascript
+>var wait = require('wait-for-stuff');
+>
+>wait.use('minutes', minutes => {
+>    wait.for.seconds(minutes * 60);
+>    return;
+>});
+>
+>
+>// later on in your code, when you need to wait for X minutes
+>// to pass - which totally makes sense in node applications (;
+>wait.for.minutes(2);
+>// [2 minutes later]: code execution continues
+>```
 <br /><br />
 
 **note** you can also use this api to overwrite existing waiters with your own logic. while this is not recommended, it is possible.
@@ -461,27 +461,27 @@ the return value from each waiter to the next, until all waiters have completed.
 **`wait.compose(waiter1, waiter2, ...waiterN)`** composes a new waiter from the waiters that are passed in.
 waiters are exhausted from right-to-left - just like you would expect from the functionl-programming `compose` function
 
-```javascript
-function myComplexFunction(path, callback){
-    fs.exists(path, result => {
-        var stream = fs.createReadStream(path);
-        callback(stream);
-    });
-};
-
-// first we create a composed waiter
-// it will first expect the arguments that should be passed into wait.for.callback.
-// the result of wait.for.callback is then passed into wait.for.stream.
-// the final result is what wait.for.stream will have returned
-//
-// in our case, myComplexFunction() expects a callback, which then gets a stream
-// composition allows us to wait on both 'waiters'
-var streamAndCallbackWaiter = wait.compose('stream', 'callback');
-var result                  = streamAndCallback(myComplexFunction, __filename); // arguments for wait.for.callback
-
-// result is the return value from wait.for.stream
-result.toString().should.include('extension: compose');
-```
+>```javascript
+>function myComplexFunction(path, callback){
+>    fs.exists(path, result => {
+>        var stream = fs.createReadStream(path);
+>        callback(stream);
+>    });
+>};
+>
+>// first we create a composed waiter
+>// it will first expect the arguments that should be passed into >wait.for.callback.
+>// the result of wait.for.callback is then passed into wait.for.stream.
+>// the final result is what wait.for.stream will have returned
+>//
+>// in our case, myComplexFunction() expects a callback, which then gets >a stream
+>// composition allows us to wait on both 'waiters'
+>var streamAndCallbackWaiter = wait.compose('stream', 'callback');
+>var result                  = streamAndCallback(myComplexFunction, >__filename); // arguments for wait.for.callback
+>
+>// result is the return value from wait.for.stream
+>result.toString().should.include('extension: compose');
+>```
 <br /><br />
 
 
