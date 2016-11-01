@@ -67,7 +67,8 @@ This basically means that you can **write your code in a linear, sequential mann
 `wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.  
 That said, it also comes with the following built-in waiters:
 
-<a id="wait-for-time">#</a> **`wait.for.time(seconds)`**  
+<a id="wait-for-time">[#](#wait-for-time)</a>
+**`wait.for.time(seconds)`**  
 Waits until `seconds` number of seconds pass
 
 ```javascript
