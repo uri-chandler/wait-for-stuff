@@ -6,30 +6,57 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 
 * **time** *(wait for x seconds to pass)*
 * **date** *(wait until `date` is reached)*
-* **event** *(wait until `event` emits)*
 * **predicate** *(wait until `prediacte` returns true)*
+* **event** *(wait until `event` emits)*
 * **promise** *(wait for `promise` to settle)*
-* **stream** *(wait until `readable-stream` is fully read)*
-* **value** *(wait for `object.property` to equal `value`)*
-* **property** *(wait for `object.property` to exist)*
-* **yield** *(wait for a generator to `yield` a speific value)*
 * **generator** *(wait for `generator` to fully exhaust all values)*
+* **stream** *(wait until `readable-stream` is fully read)*
 * **callback** *(wait for node-style `callback` to be called)*
 * **function** *(wait for custom callback `function` to be called)*
+* **yield** *(wait for a generator to `yield` a speific value)*
+* **value** *(wait for `object.property` to equal `value`)*
+* **property** *(wait for `object.property` to exist)*
 * **array** *(wait for `array` to contain some value)*
 * **compose** *(compose a new waiter from two or more existing waiters)*
+
+
 * *(chainable \ follow-through waiters are coming soon)*
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## Table of Contents
 1. [Why?](#why)
 2. [Install](#install)
 3. [How it works](#how-it-works)
 4. [Built-in waiters](#built-in-waiters)
-    1. [`wait.for.time()`](#wait-for-time)
-    2. [`wait.for.promise()`](#wait-for-promise)
+    1.  [`wait.for.time()`](#wait-for-time)
+    2.  [`wait.for.date()`](#wait-for-date)
+    3.  [`wait.for.event()`](#wait-for-event)
+    4.  [`wait.for.promise()`](#wait-for-promise)
+    5.  [`wait.for.generator()`](#wait-for-generator)
+    6.  [`wait.for.stream()`](#wait-for-stream)
+    7.  [`wait.for.callback()`](#wait-for-callback)
+    8.  [`wait.for.function()`](#wait-for-function)
+    9.  [`wait.for.yield()`](#wait-for-yield)
+    10. [`wait.for.value()`](#wait-for-value)
+    11. [`wait.for.property()`](#wait.for-property)
+    12. [`wait.for.array()`](#wait-for-array)
+5. [Middleware](#middleware)
+    1. [`wait.use()`](#wait-use)
+6. [Composition](#composition)
+    1. [`wait.compose()`](#wait-compose)
+7. [Roadmap](#roadmap)
+8. [Contribute](#contribute)
+9. [Test](#test)
+10.[Related](#related) 
 
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## <a id="why">[#](#why)</a> Why ?
 Because I'm tired of waiting for `await\async`, and want this code to work  
@@ -50,24 +77,38 @@ var fileContents = wait.for.stream(myFile);
 ```
 
 
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
-## <a id="install">[#](#install]</a> Install
+## <a id="install">[#](#install)</a> Install
 ```
 npm install wait-for-stuff
 ```
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## <a id="how-it-works">[#](#how-it-works)</a> How it works
 Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
 This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
 
 
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## <a id="built-in-waiters">[#](#built-in-waiters)</a> Built-in waiters
 `wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.  
 That said, it also comes with the following built-in waiters:
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 <a id="wait-for-time">[#](#wait-for-time)</a>
 **`wait.for.time(seconds)`**  
 Waits until `seconds` number of seconds pass
@@ -76,9 +117,27 @@ Waits until `seconds` number of seconds pass
 wait.for.time(3);
 // 3 seconds have now passed
 ```
-<br /><br />
+<br />
 
 
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-date">[#](#wait-for-date)</a>
+**`wait.for.date(futureDateObject)`** waits until the system time passes the date of `futureDateObject`.
+
+`futureDateObject` must be a `Date` object. if `futureDateObject` is configured as a date that has already passed the waiting will simply end immediately.
+
+```javascript
+var theFuture = new Date( new Date().getTime() + 5000 );
+wait.for.date(theFuture);
+// we are now in the future (though just by 5 seconds, so no biggy)
+```
+<br />
+
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 <a id="wait-for-promise">[#](#wait-for-promise)</a>
 **`wait.for.promise(promise)`**  
 waits until `promise` is settled (either resolved or rejected).  
@@ -87,9 +146,13 @@ Returns the value that the promise was settled with.
 ```javascript
 var resultOrError = wait.for.promise(new Promise(...));
 ```
-<br /><br />
+<br />
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-predicate">[#](#wait-for-predicate)</a>
 **`wait.for.predicate(fn)`** waits until the `predicate` function returns a truthy value. this is useful if you need a simple mechanism to wait on your own custom application logic
 
 ```javascript
@@ -99,11 +162,21 @@ setTimeout(() => isDone = true, 5000);
 wait.for.predicate(() => isDone);
 // [5 seconds later]: isDone is now true, execution continues
 ```
-<br /><br />
+<br />
+
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-condition">[#](#wait-for-condition)</a>
 **`wait.for.condition`** same as `wait.for.predicate`. this is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"
-<br /><br />
+<br />
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-value">[#](#wait-for-value)</a>
 **`wait.for.value(owner, property, valueToWaitFor)`** waits until the `owner[property]` matches `valueToWaitFor`.
 
 `property` must be a string.
@@ -117,10 +190,13 @@ setTimeout(() => myObject.foo = '123', 5000);
 wait.for.value(myObject, 'foo', '123');
 // [5 seconds later]: myObject.foo now equals '123'
 ```
-<br /><br />
+<br />
 
 
 
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-property">[#](#wait-for-property)</a>
 **`wait.for.property(owner, property)`** waits until `owner` has a property named `property`
 
 `property` must be a string.
@@ -134,9 +210,13 @@ setTimeout(() => myObject.foo = true, 5000);
 wait.for.property(myObject, 'foo');
 // [5 seconds later]: myObject now has a property named 'foo'
 ```
-<br /><br />
+<br />
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-event">[#](#wait-for-event)</a>
 **`wait.for.event(emitter, eventName)`** waits until `emitter` emits the `eventName` event. returns the data that the event emitted (if any).
 
 ```javascript
@@ -147,22 +227,13 @@ var eventData = wait.for.event(myEmitter, 'someEvent');
 // if the event was emitted with multiple data arguments,
 // <eventData> will be an array with those data arguments
 ```
-<br /><br />
+<br />
 
 
 
-**`wait.for.date(futureDateObject)`** waits until the system time passes the date of `futureDateObject`.
-
-`futureDateObject` must be a `Date` object. if `futureDateObject` is configured as a date that has already passed the waiting will simply end immediately.
-
-```javascript
-var theFuture = new Date( new Date().getTime() + 5000 );
-wait.for.date(theFuture);
-// we are now in the future (though just by 5 seconds, so no biggy)
-```
-<br /><br />
-
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-stream">[#](#wait-for-stream)</a>
 **`wait.for.stream(readableStream)`** waits until `readableStream` has been fully read (ended). returns the data that was read from the stream (either as `string` or `buffer`, based on what the stream emitted as it's chunks)
 
 ```javascript
@@ -170,11 +241,13 @@ var myFile       = fs.createReadStream('someFile.json');
 var fileContents = wait.for.stream(myFile);
 // fileContents now contains the contents of someFile.json
 ```
-<br /><br />
+<br />
 
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-yield">[#](#wait-for-yield)</a>
 **`wait.for.yield(generator, value)`** waits until the `generator` has yielded the specified `value`.
 
 `generator` can either be a generator-function, or an actuale iterable-generator *(the result of a generator-function)*
@@ -200,11 +273,13 @@ var iterable = myGeneratorFunction();
 
 wait.for.yield(iterable, 5);
 ```
-<br /><br />
+<br />
 
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-generator">[#](#wait-for-generator)</a>
 **`wait.for.generator(generator)`** waits until the `generator` has fully exhausted all of it's yielded values. returns the value that the generator function returns.
 
 `generator` can either be a generator-function, or an actuale iterable-generator *(the result of a generator-function)*
@@ -232,10 +307,13 @@ var iterable = myGeneratorFunction();
 var result   = wait.for.generator(iterable);
 // result === 'complete!'
 ```
-<br /><br />
+<br />
 
 
 
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-callback">[#](#wait-for-callback)</a>
 **`wait.for.callback(nodeAsyncFunction, ...params)`** waits until the `nodeAsyncFunction` has finished, passing to it any `params` that you supply.
 
 **note:** with node-style callbacks, there's usually an `error` as the first argument, and any possible `data` argument comes after that. either of these might will be null if the other isn't, and there can be more than one `data` argument. `wait.for.callback` will make an attempt to simplify the result value when possible.
@@ -267,11 +345,13 @@ var errOrResultSet = wait.for.callback(moreComplexFunc, 'foo.json');
 // errOrResultSet will either be 'err',
 // or an array containing [data1, data2, data3] in order
 ```
-<br /><br />
+<br />
 
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-function">[#](#wait-for-function)</a>
 **`wait.for.function(customAsyncFunction, ...params)`** waits until the `customAsyncFunction` has finished, passing to it any `params` that you supply.
 
 unlike `wait.for.callback`, any arguments that were passed into the callback will be returned as the complete `resultSet` of the `customAsyncFunction`
@@ -288,11 +368,13 @@ var resultSet = wait.for.function(fs.readFile, 'foo.json');
 
 // resultSet is an array of [err, data] in order
 ```
-<br /><br />
+<br />
 
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-array">[#](#wait-for-array)</a>
 **`wait.for.array(array, value)`** waits until `array` contains `value`
 
 ```javascript
@@ -301,12 +383,14 @@ setTimeout(() => myArray.push('hello world'), 1000);
 
 wait.for.array(myArray, 'hello world');
 ```
-<br /><br />
+<br />
 
 
 
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
-## Middleware
+## <a id="middleware">[#](#middleware)</a>Middleware
 this library tries to provide atomic structures with the built-in waiters. from these basic waiters, you should be able to construct any custom waiter for anything you can think of *(and I sure hope you will).*
 
 once you've built your own waiter-middleware, you can add it to `wait-for-stuff` using the **`wait.use(name, middleware)`** api.
@@ -337,7 +421,8 @@ wait.for.minutes(2);
 
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## Composition
 you can compose your own "complex" waiter by combining the work of two or more waiters.
@@ -373,7 +458,8 @@ result.toString().should.include('extension: compose');
 
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 --
 ## Contribute
 I hope many people will find this module helpful - either as an alternative to asynchronous flow-execution patterns such as await\async (while we wait) etc.. - or as a supplement to go along with what ever you're allready using.
@@ -383,15 +469,19 @@ If you create your own waiter middlewares, please do share them with the communi
 If you would like to have your waiter middlware added as a built-in to `wait-for-stuff`, please send me PR (please also make sure to include tests)
 
 
-
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## Test
 ```
 npm run test
 ```
-<br /><br />
+<br />
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 ---
 ## Related
 * [deasync](https://www.npmjs.com/package/deasync)
