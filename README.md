@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ujc/wait-for-stuff.svg?branch=master)](https://travis-ci.org/ujc/wait-for-stuff)
 
 # wait-for-stuff
-An extendable library that can wait for stuff to happen in a synchronous-yet-non-blocking manner  
+An extendable library that can wait for stuff to happen in a synchronous-yet-non-blocking manner.  
 Instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
 
 * **time** *(wait for x seconds to pass)*
@@ -22,7 +22,8 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 
 ---
 ## Why ?
-because I'm tired of waiting for `await\async`, and want this code to work *(without blocking node's event-loop)*:
+Because I'm tired of waiting for `await\async`, and want this code to work  
+*(without blocking node's event-loop)*:
 
 ```javascript
 var fs     = require('fs');
@@ -40,27 +41,26 @@ var fileContents = wait.for.stream(myFile);
 <br /><br />
 
 
-
+---
 ## Install
 ```
 npm install wait-for-stuff
 ```
 
 
-
+---
 ## How it works
-behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.
-
-this basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
+Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
+This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
 
 
 ---
 ## Built-in waiters
-`wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.
+`wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.  
+That said, it also comes with the following built-in waiters:
 
-that said, it also comes with the following built-in waiters
-
-**`wait.for.time(seconds)`** waits until `seconds` number of seconds pass
+**`wait.for.time(seconds)`**  
+Waits until `seconds` number of seconds pass
 
 ```javascript
 wait.for.time(3);
@@ -69,7 +69,9 @@ wait.for.time(3);
 <br /><br />
 
 
-**`wait.for.promise(promise)`** waits until `promise` is settled (either resolved or rejected). returns the value that the promise was settled with.
+**`wait.for.promise(promise)`**  
+waits until `promise` is settled (either resolved or rejected).  
+Returns the value that the promise was settled with.
 
 ```javascript
 var resultOrError = wait.for.promise(new Promise(...));
