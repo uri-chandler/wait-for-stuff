@@ -183,8 +183,7 @@ wait.for.predicate(() => isDone);
 **`wait.for.condition`**  
 Same as `wait.for.predicate`.  
 This is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"
-<br />
-
+<br /><br /><br />
 
 
 [//]: # (----------------------------------------------------)
