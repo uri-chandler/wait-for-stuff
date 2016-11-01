@@ -63,19 +63,19 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 Because I'm tired of waiting for `await\async`, and want this code to work  
 *(without blocking node's event-loop)*:
 
-```javascript
-var fs     = require('fs');
-var wait   = require('wait-for-stuff');
-var myFile = fs.createReadStream('my.json');
-
-var fileContents = wait.for.stream(myFile);
-// the stream has now been fully read, async in the
-// background while my code is still nice-and-pretty, without
-// worrying about async-code-execution-flow design patterns
-// and such
-
-// feel free to do something with the file contents now
-```
+>```javascript
+>var fs     = require('fs');
+>var wait   = require('wait-for-stuff');
+>var myFile = fs.createReadStream('my.json');
+>
+>var fileContents = wait.for.stream(myFile);
+>// the stream has now been fully read, async in the
+>// background while my code is still nice-and-pretty, without
+>// worrying about async-code-execution-flow design patterns
+>// and such
+>
+>// feel free to do something with the file contents now
+>```
 
 
 
