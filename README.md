@@ -35,15 +35,16 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
     1.  [`wait.for.time()`](#wait-for-time)
     2.  [`wait.for.date()`](#wait-for-date)
     3.  [`wait.for.event()`](#wait-for-event)
-    4.  [`wait.for.promise()`](#wait-for-promise)
-    5.  [`wait.for.generator()`](#wait-for-generator)
-    6.  [`wait.for.stream()`](#wait-for-stream)
-    7.  [`wait.for.callback()`](#wait-for-callback)
-    8.  [`wait.for.function()`](#wait-for-function)
-    9.  [`wait.for.yield()`](#wait-for-yield)
-    10. [`wait.for.value()`](#wait-for-value)
-    11. [`wait.for.property()`](#wait.for-property)
-    12. [`wait.for.array()`](#wait-for-array)
+    4.  [`wait.for.predicate()`](#wait-for-predicate)
+    5.  [`wait.for.promise()`](#wait-for-promise)
+    6.  [`wait.for.generator()`](#wait-for-generator)
+    7.  [`wait.for.stream()`](#wait-for-stream)
+    8.  [`wait.for.callback()`](#wait-for-callback)
+    9.  [`wait.for.function()`](#wait-for-function)
+    10. [`wait.for.yield()`](#wait-for-yield)
+    11. [`wait.for.value()`](#wait-for-value)
+    12. [`wait.for.property()`](#wait.for-property)
+    13. [`wait.for.array()`](#wait-for-array)
 5. [Middleware](#middleware)
     1. [`wait.use()`](#wait-use)
 6. [Composition](#composition)
@@ -123,9 +124,11 @@ wait.for.time(3);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-date">[#](#wait-for-date)</a>
-**`wait.for.date(futureDateObject)`** waits until the system time passes the date of `futureDateObject`.
+**`wait.for.date(futureDateObject)`**  
+Waits until the system time passes the date of `futureDateObject`.
 
-`futureDateObject` must be a `Date` object. if `futureDateObject` is configured as a date that has already passed the waiting will simply end immediately.
+`futureDateObject` must be a `Date` object.  
+If `futureDateObject` is configured as a date that has already passed the waiting will simply end immediately.
 
 ```javascript
 var theFuture = new Date( new Date().getTime() + 5000 );
@@ -138,86 +141,10 @@ wait.for.date(theFuture);
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
-<a id="wait-for-promise">[#](#wait-for-promise)</a>
-**`wait.for.promise(promise)`**  
-waits until `promise` is settled (either resolved or rejected).  
-Returns the value that the promise was settled with.
-
-```javascript
-var resultOrError = wait.for.promise(new Promise(...));
-```
-<br />
-
-
-
-[//]: # (----------------------------------------------------)
-[//]: # (----------------------------------------------------)
-<a id="wait-for-predicate">[#](#wait-for-predicate)</a>
-**`wait.for.predicate(fn)`** waits until the `predicate` function returns a truthy value. this is useful if you need a simple mechanism to wait on your own custom application logic
-
-```javascript
-var isDone = false;
-setTimeout(() => isDone = true, 5000);
-
-wait.for.predicate(() => isDone);
-// [5 seconds later]: isDone is now true, execution continues
-```
-<br />
-
-
-
-[//]: # (----------------------------------------------------)
-[//]: # (----------------------------------------------------)
-<a id="wait-for-condition">[#](#wait-for-condition)</a>
-**`wait.for.condition`** same as `wait.for.predicate`. this is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"
-<br />
-
-
-
-[//]: # (----------------------------------------------------)
-[//]: # (----------------------------------------------------)
-<a id="wait-for-value">[#](#wait-for-value)</a>
-**`wait.for.value(owner, property, valueToWaitFor)`** waits until the `owner[property]` matches `valueToWaitFor`.
-
-`property` must be a string.
-
-`owner` must be an object
-
-```javascript
-var myObject = { foo: 'bar'};
-setTimeout(() => myObject.foo = '123', 5000);
-
-wait.for.value(myObject, 'foo', '123');
-// [5 seconds later]: myObject.foo now equals '123'
-```
-<br />
-
-
-
-[//]: # (----------------------------------------------------)
-[//]: # (----------------------------------------------------)
-<a id="wait-for-property">[#](#wait-for-property)</a>
-**`wait.for.property(owner, property)`** waits until `owner` has a property named `property`
-
-`property` must be a string.
-
-`owner` must be an object
-
-```javascript
-var myObject = {};
-setTimeout(() => myObject.foo = true, 5000);
-
-wait.for.property(myObject, 'foo');
-// [5 seconds later]: myObject now has a property named 'foo'
-```
-<br />
-
-
-
-[//]: # (----------------------------------------------------)
-[//]: # (----------------------------------------------------)
 <a id="wait-for-event">[#](#wait-for-event)</a>
-**`wait.for.event(emitter, eventName)`** waits until `emitter` emits the `eventName` event. returns the data that the event emitted (if any).
+**`wait.for.event(emitter, eventName)`**  
+Waits until `emitter` emits the `eventName` event.  
+Returns the data that the event emitted (if any).
 
 ```javascript
 var eventData = wait.for.event(myEmitter, 'someEvent');
@@ -233,13 +160,17 @@ var eventData = wait.for.event(myEmitter, 'someEvent');
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
-<a id="wait-for-stream">[#](#wait-for-stream)</a>
-**`wait.for.stream(readableStream)`** waits until `readableStream` has been fully read (ended). returns the data that was read from the stream (either as `string` or `buffer`, based on what the stream emitted as it's chunks)
+<a id="wait-for-predicate">[#](#wait-for-predicate)</a>
+**`wait.for.predicate(fn)`**  
+Waits until the `predicate` function returns a truthy value.  
+This is useful if you need a simple mechanism to wait on your own custom application logic
 
 ```javascript
-var myFile       = fs.createReadStream('someFile.json');
-var fileContents = wait.for.stream(myFile);
-// fileContents now contains the contents of someFile.json
+var isDone = false;
+setTimeout(() => isDone = true, 5000);
+
+wait.for.predicate(() => isDone);
+// [5 seconds later]: isDone is now true, execution continues
 ```
 <br />
 
@@ -247,42 +178,38 @@ var fileContents = wait.for.stream(myFile);
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
-<a id="wait-for-yield">[#](#wait-for-yield)</a>
-**`wait.for.yield(generator, value)`** waits until the `generator` has yielded the specified `value`.
+<a id="wait-for-condition">[#](#wait-for-condition)</a>
+**`wait.for.condition`**  
+Same as `wait.for.predicate`.  
+This is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"
+<br />
 
-`generator` can either be a generator-function, or an actuale iterable-generator *(the result of a generator-function)*
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-promise">[#](#wait-for-promise)</a>
+**`wait.for.promise(promise)`**  
+Waits until `promise` is settled (either resolved or rejected).  
+Returns the value that the promise was settled with.
 
 ```javascript
-function* myGeneratorFunction(){
-    count = 0;
-    while (true) { yield ++count }
-}
-
-wait.for.yield(myGeneratorFunction, 5);
-// count is now 5
-
-
-//////////////////////////////////////////////////////
-// alternative (pass in the actual iterable-generator)
-function* myGeneratorFunction(){
-    count = 0;
-    while (true) { yield ++count }
-}
-
-var iterable = myGeneratorFunction();
-
-wait.for.yield(iterable, 5);
+var resultOrError = wait.for.promise(new Promise(...));
 ```
 <br />
+
 
 
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-generator">[#](#wait-for-generator)</a>
-**`wait.for.generator(generator)`** waits until the `generator` has fully exhausted all of it's yielded values. returns the value that the generator function returns.
+**`wait.for.generator(generator)`**  
+Waits until the `generator` has fully exhausted all of it's yielded values.  
+Returns the value that the generator function returns.
 
-`generator` can either be a generator-function, or an actuale iterable-generator *(the result of a generator-function)*
+`generator` can either be a generator-function, or an actuale iterable-generator  
+*(the result of a generator-function)*
 
 ```javascript
 function* myGeneratorFunction(){
@@ -313,12 +240,34 @@ var result   = wait.for.generator(iterable);
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
+<a id="wait-for-stream">[#](#wait-for-stream)</a>
+**`wait.for.stream(readableStream)`**  
+Waits until `readableStream` has been fully read (ended).  
+Returns the data that was read from the stream  
+*(either as `string` or `buffer`, based on what the stream emitted as it's chunks)*
+
+```javascript
+var myFile       = fs.createReadStream('someFile.json');
+var fileContents = wait.for.stream(myFile);
+// fileContents now contains the contents of someFile.json
+```
+<br />
+
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
 <a id="wait-for-callback">[#](#wait-for-callback)</a>
-**`wait.for.callback(nodeAsyncFunction, ...params)`** waits until the `nodeAsyncFunction` has finished, passing to it any `params` that you supply.
+**`wait.for.callback(nodeAsyncFunction, ...params)`**  
+Waits until the `nodeAsyncFunction` has finished, passing to it any `params` that you supply.  
+Returns one or more values that the `callback` got as it's arguments.
 
-**note:** with node-style callbacks, there's usually an `error` as the first argument, and any possible `data` argument comes after that. either of these might will be null if the other isn't, and there can be more than one `data` argument. `wait.for.callback` will make an attempt to simplify the result value when possible.
+**Note:** If the callback was passed in a single argument *(either an `error` or actual `data`)* then that single argument is returned.  
+If the callback got more than a single value, then an array containing these values is returned.  
+Also, this array-of-values is filtered so that `null` and `undefined` values are removed.  
+Last, if after this filtering there is only a single value in the array - that value is returned directly *(instead of a single-value array)*
 
-**see also:** **`wait.for.function`** *(below)*
+**See also:** **<a id="wait-for-function">[#](#wait-for-function)</a> `wait.for.function()`**
 
 ```javascript
 // instead of this:
@@ -352,9 +301,10 @@ var errOrResultSet = wait.for.callback(moreComplexFunc, 'foo.json');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-function">[#](#wait-for-function)</a>
-**`wait.for.function(customAsyncFunction, ...params)`** waits until the `customAsyncFunction` has finished, passing to it any `params` that you supply.
+**`wait.for.function(customAsyncFunction, ...params)`**  
+Waits until the `customAsyncFunction` has finished, passing to it any `params` that you supply.
 
-unlike `wait.for.callback`, any arguments that were passed into the callback will be returned as the complete `resultSet` of the `customAsyncFunction`
+Unlike `wait.for.callback()`, any-and-all arguments that were passed into the function will be returned as the complete `resultSet` of the `customAsyncFunction`.
 
 ```javascript
 // instead of this:
@@ -372,10 +322,89 @@ var resultSet = wait.for.function(fs.readFile, 'foo.json');
 
 
 
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-yield">[#](#wait-for-yield)</a>
+**`wait.for.yield(generator, value)`**  
+Waits until the `generator` has yielded the specified `value`.
+
+`generator` can either be a generator-function, or an actuale iterable-generator  
+*(the result of a generator-function)*
+
+```javascript
+function* myGeneratorFunction(){
+    count = 0;
+    while (true) { yield ++count }
+}
+
+wait.for.yield(myGeneratorFunction, 5);
+// count is now 5
+
+
+//////////////////////////////////////////////////////
+// alternative (pass in the actual iterable-generator)
+function* myGeneratorFunction(){
+    count = 0;
+    while (true) { yield ++count }
+}
+
+var iterable = myGeneratorFunction();
+
+wait.for.yield(iterable, 5);
+```
+<br />
+
+
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-value">[#](#wait-for-value)</a>
+**`wait.for.value(owner, property, valueToWaitFor)`**  
+Waits until the `owner[property]` matches `valueToWaitFor`.
+
+`property` must be a string  
+`owner` must be an object
+
+```javascript
+var myObject = { foo: 'bar'};
+setTimeout(() => myObject.foo = '123', 5000);
+
+wait.for.value(myObject, 'foo', '123');
+// [5 seconds later]: myObject.foo now equals '123'
+```
+<br />
+
+
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-property">[#](#wait-for-property)</a>
+**`wait.for.property(owner, property)`**  
+Waits until `owner` has a property named `property`
+
+`property` must be a string  
+`owner` must be an object
+
+```javascript
+var myObject = {};
+setTimeout(() => myObject.foo = true, 5000);
+
+wait.for.property(myObject, 'foo');
+// [5 seconds later]: myObject now has a property named 'foo'
+```
+<br />
+
+
+
+
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-array">[#](#wait-for-array)</a>
-**`wait.for.array(array, value)`** waits until `array` contains `value`
+**`wait.for.array(array, value)`**  
+Waits until `array` contains `value`
 
 ```javascript
 var myArray = [];
@@ -390,7 +419,7 @@ wait.for.array(myArray, 'hello world');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 ---
-## <a id="middleware">[#](#middleware)</a>Middleware
+## <a id="middleware">[#](#middleware)</a> Middleware
 this library tries to provide atomic structures with the built-in waiters. from these basic waiters, you should be able to construct any custom waiter for anything you can think of *(and I sure hope you will).*
 
 once you've built your own waiter-middleware, you can add it to `wait-for-stuff` using the **`wait.use(name, middleware)`** api.
