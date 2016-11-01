@@ -23,14 +23,15 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 
 ---
 ## Table of Contents
-* [Why?](#why)
-* [Install](#install)
-* [How it works](#how-it-works)
-* [Built-in waiters](#built-in-waiters)
-  * [`wait.for.time`](#wait-for-time)
+1. [Why?](#why)
+2. [Install](#install)
+3. [How it works](#how-it-works)
+4. [Built-in waiters](#built-in-waiters)
+    1. [`wait.for.time()`](#wait-for-time)
+    2. [`wait.for.promise()`](#wait-for-promise)
 
 ---
-## <a id="why">#</a> Why ?
+## <a id="why">[#](#why)</a> Why ?
 Because I'm tired of waiting for `await\async`, and want this code to work  
 *(without blocking node's event-loop)*:
 
@@ -50,20 +51,20 @@ var fileContents = wait.for.stream(myFile);
 
 
 ---
-## <a id="install">#</a> Install
+## <a id="install">[#](#install]</a> Install
 ```
 npm install wait-for-stuff
 ```
 
 
 ---
-## <a id="how-it-works">#</a> How it works
+## <a id="how-it-works">[#](#how-it-works)</a> How it works
 Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
 This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
 
 
 ---
-## <a id="built-in-waiters">#</a> Built-in waiters
+## <a id="built-in-waiters">[#](#built-in-waiters)</a> Built-in waiters
 `wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.  
 That said, it also comes with the following built-in waiters:
 
@@ -78,6 +79,7 @@ wait.for.time(3);
 <br /><br />
 
 
+<a id="wait-for-promise">[#](#wait-for-promise)</a>
 **`wait.for.promise(promise)`**  
 waits until `promise` is settled (either resolved or rejected).  
 Returns the value that the promise was settled with.
