@@ -1,9 +1,14 @@
 [![Build Status](https://travis-ci.org/ujc/wait-for-stuff.svg?branch=master)](https://travis-ci.org/ujc/wait-for-stuff)
 
 # wait-for-stuff
-an extendable library that can wait for stuff to happen in a synchronous-but-not-blocking manner
-instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
+An extendable library that can wait for stuff to happen in a synchronous-yet-non-blocking manner  
+Instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
 
+| waiter   | description                  |
+| ------   | ---------------------------- |
+| `time`   | *wait for x seconds to pass* | 
+
+  
 * **time** *(wait for x seconds to pass)*
 * **date** *(wait until `date` is reached)*
 * **event** *(wait until `event` emits)*
@@ -18,7 +23,6 @@ instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **function** *(wait for custom callback `function` to be called)*
 * **array** *(wait for `array` to contain some value)*
 * **compose** *(compose a new waiter from two or more existing waiters)*
-
 * *(chainable \ follow-through waiters are coming soon)*
 
 ---
