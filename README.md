@@ -20,8 +20,17 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **compose** *(compose a new waiter from two or more existing waiters)*
 * *(chainable \ follow-through waiters are coming soon)*
 
+
 ---
-## Why ?
+## Table of Contents
+* [Why?](#why)
+* [Install](#install)
+* [How it works](#how-it-works)
+* [Built-in waiters](#built-in-waiters)
+  * [`wait.for.time`](#wait-for-time)
+
+---
+## <a id="why">#</a> Why ?
 Because I'm tired of waiting for `await\async`, and want this code to work  
 *(without blocking node's event-loop)*:
 
@@ -38,28 +47,27 @@ var fileContents = wait.for.stream(myFile);
 
 // feel free to do something with the file contents now
 ```
-<br /><br />
 
 
 ---
-## Install
+## <a id="install">#</a> Install
 ```
 npm install wait-for-stuff
 ```
 
 
 ---
-## How it works
+## <a id="how-it-works">#</a> How it works
 Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
 This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
 
 
 ---
-## Built-in waiters
+## <a id="built-in-waiters">#</a> Built-in waiters
 `wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.  
 That said, it also comes with the following built-in waiters:
 
-**`wait.for.time(seconds)`**  
+<a id="wait-for-time">#</a> **`wait.for.time(seconds)`**  
 Waits until `seconds` number of seconds pass
 
 ```javascript
