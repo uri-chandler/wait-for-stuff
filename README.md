@@ -4,11 +4,6 @@
 An extendable library that can wait for stuff to happen in a synchronous-yet-non-blocking manner  
 Instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
 
-| waiter   | description                  |
-| ------   | ---------------------------- |
-| `time`   | *wait for x seconds to pass* | 
-
-  
 * **time** *(wait for x seconds to pass)*
 * **date** *(wait until `date` is reached)*
 * **event** *(wait until `event` emits)*
