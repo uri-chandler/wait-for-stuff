@@ -19,7 +19,7 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **array** *(wait for `array` to contain some value)*
 * **compose** *(compose a new waiter from two or more existing waiters)*
 
-* *(chainable \ follow-through waiters are coming soon)*
+*(follow-through waiters are coming soon)*
 
 
 
