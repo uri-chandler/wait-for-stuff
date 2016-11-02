@@ -508,7 +508,8 @@ var result                  = streamAndCallback(myComplexFunction, __filename); 
 I hope people will find this module helpful - either as an alternative to asynchronous flow-execution patterns such as `await\async` *(until it's official release at least)* - or as a supplement to go along with what ever you're all ready using.
 
 If you create your own waiter-middlewares, please do share them with the community.  
-If you would like to have your waiter middlware added as a built-in to `wait-for-stuff`, please send a PR *(please also make sure to include tests)*
+If you would like to have your waiter middlware added as a built-in to `wait-for-stuff`, please send a PR *(please also make sure to include tests)*  
+<br /><br /><br />
 
 
 [//]: # (----------------------------------------------------)
