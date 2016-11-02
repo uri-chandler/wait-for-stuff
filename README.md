@@ -103,7 +103,6 @@ This basically means that you can **write your code in a linear, sequential mann
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
----
 ## <a id="built-in-waiters">[#](#built-in-waiters)</a> Built-in waiters
 `wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.
 That said, it also comes with the following built-in waiters:
