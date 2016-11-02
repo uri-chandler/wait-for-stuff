@@ -42,17 +42,16 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
     9.  [`wait.for.function()`](#wait-for-function)
     10. [`wait.for.yield()`](#wait-for-yield)
     11. [`wait.for.value()`](#wait-for-value)
-    12. [`wait.for.property()`](#wait.for-property)
+    12. [`wait.for.property()`](#wait-for-property)
     13. [`wait.for.array()`](#wait-for-array)
 5. [Middleware](#middleware)
     1. [`wait.use()`](#wait-use)
     2. [`wait.alias()`](#wait-alias)
 6. [Composition](#composition)
     1. [`wait.compose()`](#wait-compose)
-7. [Roadmap](#roadmap)
-8. [Contribute](#contribute)
-9. [Test](#test)
-10. [Related](#related)
+7. [Contribute](#contribute)
+8. [Test](#test)
+9. [Related](#related)
 
 
 
