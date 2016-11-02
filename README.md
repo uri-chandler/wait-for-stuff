@@ -502,7 +502,6 @@ var result                  = streamAndCallback(myComplexFunction, __filename); 
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
---
 ## <a id="contribute">[#](#contribute)</a> Contribute
 I hope people will find this module helpful - either as an alternative to asynchronous flow-execution patterns such as `await\async` *(until it's official release at least)* - or as a supplement to go along with what ever you're all ready using.
 
