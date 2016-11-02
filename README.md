@@ -95,7 +95,7 @@ npm install wait-for-stuff
 
 ## <a id="how-it-works">[#](#how-it-works)</a> How it works
 Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
-This basically means that you can write your code in a **linear, sequential manner** - while still allowing async operations to complete in the background on the same execution block.
+This basically means that you can write your code in a **linear, sequential manner** - while still allowing async operations to complete in the background on the same execution block.  
 <br /><br /><br />
 
 
