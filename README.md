@@ -266,7 +266,7 @@ If the callback got just a single value, that value will be returned by `wait.fo
 If the callback got more than a single value, an array-of-values is returned by `wait.for.callback()`. This array-of-values filters out `null` and `undefined` values. The order of the items in the array is the order in which they were passed into the callback.  
 Also, if the after filtering for `null` and `undefined` values the array only contains a single element, that element is returned directly *(instead of returning an array with just a single element in it)*.
 
-**NOTE:** If you want to always get an array as the return value, use **<a id="wait-for-function">[#](#wait-for-function)</a> `wait.for.function()`**
+**NOTE:** If you want to always get an array as the return value, use **[#](#wait-for-function) `wait.for.function()`**
 
 ```javascript
 // instead of this:
@@ -492,10 +492,9 @@ function myComplexFunction(path, callback){
 // in our case, myComplexFunction() expects a callback, which then gets >a stream
 // composition allows us to wait on both 'waiters'
 var streamAndCallbackWaiter = wait.compose('stream', 'callback');
-var result                  = streamAndCallback(myComplexFunction, >__filename); // arguments for wait.for.callback
+var result                  = streamAndCallback(myComplexFunction, __filename); // arguments for wait.for.callback
 
 // result is the return value from wait.for.stream
-result.toString().should.include('extension: compose');
 ```
 <br /><br />
 
@@ -514,7 +513,6 @@ If you would like to have your waiter middlware added as a built-in to `wait-for
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
----
 ## <a id="test">[#](#test)</a> Test
 ```
 npm run test
@@ -525,7 +523,6 @@ npm run test
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
----
 ## <a id="related">[#](#related)</a> Related
 * [deasync](https://www.npmjs.com/package/deasync)
 
