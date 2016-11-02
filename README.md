@@ -124,7 +124,7 @@ wait.for.time(3);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-date">[#](#wait-for-date)</a>
-**`wait.for.date(futureDateObject)`**
+**`wait.for.date(futureDateObject)`**  
 Waits until the system time passes the date of `futureDateObject`.
 
 `futureDateObject` must be a `Date` object.  
@@ -142,7 +142,7 @@ wait.for.date(theFuture);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-event">[#](#wait-for-event)</a>
-**`wait.for.event(emitter, eventName)`**
+**`wait.for.event(emitter, eventName)`**  
 Waits until `emitter` emits the `eventName` event.  
 Returns the data that the event emitted (if any).
 
@@ -162,7 +162,7 @@ var eventData = wait.for.event(myEmitter, 'someEvent');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-predicate">[#](#wait-for-predicate)</a>
-**`wait.for.predicate(fn)`**
+**`wait.for.predicate(fn)`**  
 Waits until the `predicate` function returns a truthy value.  
 This is useful if you need a simple mechanism to wait on your own custom application logic
 
@@ -180,7 +180,7 @@ wait.for.predicate(() => isDone);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-condition">[#](#wait-for-condition)</a>
-**`wait.for.condition`**
+**`wait.for.condition`**  
 Same as `wait.for.predicate`.  
 This is just a convenience alias in case you prefer to use the word "condition" instead of "predicate"  
 <br /><br /><br />
@@ -189,7 +189,7 @@ This is just a convenience alias in case you prefer to use the word "condition" 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-promise">[#](#wait-for-promise)</a>
-**`wait.for.promise(promise)`**
+**`wait.for.promise(promise)`**  
 Waits until `promise` is settled (either resolved or rejected).  
 Returns the value that the promise was settled with.
 
@@ -204,7 +204,7 @@ var resultOrError = wait.for.promise(new Promise(...));
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-generator">[#](#wait-for-generator)</a>
-**`wait.for.generator(generator)`**
+**`wait.for.generator(generator)`**  
 Waits until the `generator` has fully exhausted all of it's yielded values.  
 Returns the value that the generator function returns.
 
@@ -241,7 +241,7 @@ var result   = wait.for.generator(iterable);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-stream">[#](#wait-for-stream)</a>
-**`wait.for.stream(readableStream)`**
+**`wait.for.stream(readableStream)`**  
 Waits until `readableStream` has been fully read (ended).  
 Returns the data that was read from the stream  
 *(either as `string` or `buffer`, based on what the stream emitted as it's chunks)*
@@ -258,7 +258,7 @@ var fileContents = wait.for.stream(myFile);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-callback">[#](#wait-for-callback)</a>
-**`wait.for.callback(nodeAsyncFunction, ...params)`**
+**`wait.for.callback(nodeAsyncFunction, ...params)`**  
 Waits until the `nodeAsyncFunction` has finished, passing to it any `params` that you supply.  
 Returns one or more values that the `callback` got as it's arguments.
 
@@ -300,7 +300,7 @@ var errOrResultSet = wait.for.callback(moreComplexFunc, 'foo.json');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-function">[#](#wait-for-function)</a>
-**`wait.for.function(customAsyncFunction, ...params)`**
+**`wait.for.function(customAsyncFunction, ...params)`**  
 Waits until the `customAsyncFunction` has finished, passing to it any `params` that you supply.
 
 Unlike `wait.for.callback()`, any-and-all arguments that were passed into the function will be returned as the complete `resultSet` of the `customAsyncFunction`.
@@ -325,7 +325,7 @@ var resultSet = wait.for.function(fs.readFile, 'foo.json');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-yield">[#](#wait-for-yield)</a>
-**`wait.for.yield(generator, value)`**
+**`wait.for.yield(generator, value)`**  
 Waits until the `generator` has yielded the specified `value`.
 
 `generator` can either be a generator-function, or an actuale iterable-generator  
@@ -360,7 +360,7 @@ wait.for.yield(iterable, 5);
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-value">[#](#wait-for-value)</a>
-**`wait.for.value(owner, property, valueToWaitFor)`**
+**`wait.for.value(owner, property, valueToWaitFor)`**  
 Waits until the `owner[property]` matches `valueToWaitFor`.
 
 `property` must be a string  
@@ -381,7 +381,7 @@ wait.for.value(myObject, 'foo', '123');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-property">[#](#wait-for-property)</a>
-**`wait.for.property(owner, property)`**
+**`wait.for.property(owner, property)`**  
 Waits until `owner` has a property named `property`
 
 `property` must be a string  
@@ -402,7 +402,7 @@ wait.for.property(myObject, 'foo');
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-array">[#](#wait-for-array)</a>
-**`wait.for.array(array, value)`**
+**`wait.for.array(array, value)`**  
 Waits until `array` contains `value`
 
 ```javascript
