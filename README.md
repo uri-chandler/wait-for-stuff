@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ujc/wait-for-stuff.svg?branch=master)](https://travis-ci.org/ujc/wait-for-stuff)
 
 # wait-for-stuff
-An extendable library that can wait for stuff to happen in a synchronous-yet-non-blocking manner.
+An extendable library that can wait for stuff to happen in a synchronous-yet-non-blocking manner.  
 Instead of waiting for **`async\await`**, you can now simply wait for the following "stuff":
 
 * **time** *(wait for x seconds to pass)*
@@ -18,7 +18,6 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **property** *(wait for `object.property` to exist)*
 * **array** *(wait for `array` to contain some value)*
 * **compose** *(compose a new waiter from two or more existing waiters)*
-
 
 * *(chainable \ follow-through waiters are coming soon)*
 
@@ -61,7 +60,7 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 [//]: # (----------------------------------------------------)
 ---
 ## <a id="why">[#](#why)</a> Why ?
-Because I'm tired of waiting for `await\async`, and want this code to work
+Because I'm tired of waiting for `await\async`, and want this code to work  
 *(without blocking node's event-loop)*:
 
 ```javascript
@@ -95,7 +94,7 @@ npm install wait-for-stuff
 [//]: # (----------------------------------------------------)
 
 ## <a id="how-it-works">[#](#how-it-works)</a> How it works
-Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.
+Behind the scenes, `wait-for-stuff` uses [deasync](https://www.npmjs.com/package/deasync) to do it's magic.  
 This basically means that you can **write your code in a linear, sequential manner - while still allowing async operations to complete in the background on the same execution block**.
 <br /><br />
 
@@ -104,21 +103,21 @@ This basically means that you can **write your code in a linear, sequential mann
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 ## <a id="built-in-waiters">[#](#built-in-waiters)</a> Built-in waiters
-`wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.
+`wait-for-stuff` is designed to be *middleware-oriented* - which is just a fancy way of saying you can add your own "stuff" to "wait for" based on your own logic.  
 That said, it also comes with the following built-in waiters:
 
 
 [//]: # (----------------------------------------------------)
 [//]: # (----------------------------------------------------)
 <a id="wait-for-time">[#](#wait-for-time)</a>
-**`wait.for.time(seconds)`**
+**`wait.for.time(seconds)`**  
 Waits until `seconds` number of seconds pass
 
 ```javascript
 wait.for.time(3);
 // 3 seconds have now passed
 ```
-<br />
+<br /><br />
 
 
 [//]: # (----------------------------------------------------)
