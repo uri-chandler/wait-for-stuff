@@ -18,7 +18,9 @@
 ///////////////////////////////////////////////////////////
 // dependencies                                          //
 ///////////////////////////////////////////////////////////
-var deasync = require('deasync');
+var deasync      = require('deasync');
+var stream       = require('stream');
+var EventEmitter = require('events').EventEmitter;
 ///////////////////////////////////////////////////////////
 
 
@@ -116,7 +118,7 @@ var $wait = {
 ///////////////////////////////////////////////////////////
 $wait.use('time', seconds => {
     if (typeof seconds !== 'number') {
-        throw new Error('<wait-for-sync>.for.time(..) :: invalid <seconds> argument' + seconds);
+        throw new Error('wait.for.time(..) :: invalid <seconds> argument ' + seconds);
     }
 
     var isDone   = false;
@@ -137,6 +139,10 @@ $wait.use('time', seconds => {
 });
 
 $wait.use('promise', promise => {
+    if (!(promise instanceof Promise)){
+        throw new Error('wait.for.promise(..) :: invalid <promise> argument ' + promise);
+    }
+
     var isDone = false;
     var result = null;
 
@@ -149,6 +155,10 @@ $wait.use('promise', promise => {
 });
 
 $wait.use('predicate', predicate => {
+    if (typeof predicate !== 'function'){
+        throw new Error('wait.for.predicate(..) :: invalid <promise> argument ' + predicate);
+    }
+
     var isDone = false;
 
     deasync.loopWhile(() => {
@@ -162,14 +172,38 @@ $wait.use('predicate', predicate => {
 });
 
 $wait.use('value', (owner, propertyName, valueToWaitFor) => {
+    if (typeof owner !== 'object'){
+        throw new Error('wait.for.value(..) :: invalid <owner> argument ' + owner);
+    }
+
+    if (typeof propertyName !== 'string'){
+        throw new Error('wait.for.value(..) :: invalid <propertyName> argument ' + propertyName);
+    }
+
     deasync.loopWhile(() => owner[propertyName] !== valueToWaitFor);
 });
 
 $wait.use('property', (owner, property) => {
+    if (typeof owner !== 'object'){
+        throw new Error('wait.for.property(..) :: invalid <owner> argument ' + owner);
+    }
+
+    if (typeof property !== 'string'){
+        throw new Error('wait.for.property(..) :: invalid <property> argument ' + property);
+    }
+
     deasync.loopWhile(() => (property in owner) === false);
 });
 
 $wait.use('event', (emitter, eventName) => {
+    if (!(emitter instanceof EventEmitter)){
+        throw new Error('wait.for.event(..) :: invalid <emitter> argument ' + emitter);
+    }
+
+    if (typeof eventName !== 'string'){
+        throw new Error('wait.for.value(..) :: invalid <eventName> argument ' + eventName);
+    }
+
     var isDone    = false;
     var eventData = null;
 
@@ -183,10 +217,18 @@ $wait.use('event', (emitter, eventName) => {
 });
 
 $wait.use('date', date => {
+    if (!(date instanceof Date)){
+        throw new Error('wait.for.date(..) :: invalid <date> argument ' + date);
+    }
+
     deasync.loopWhile(() => new Date().getTime() < date.getTime() );
 });
 
 $wait.use('stream', readableStream => {
+    if (!(readableStream instanceof stream.Readable)){
+        throw new Error('wait.for.stream(..) :: invalid <readableStream> argument ' + readableStream);
+    }
+
     var isDone = false;
     var data   = [];
 
@@ -210,8 +252,12 @@ $wait.use('yield', (generator, value) => {
     var nextValue = null;
     var isDone    = false;
 
-    if (typeof generator === 'function') {
+    if (generator.constructor.name === 'GeneratorFunction') {
         generator = generator();
+    }
+
+    if (typeof generator.next !== 'function'){
+        throw new Error('wait.for.yield(..) :: invalid <generator> argument ' + generator);
     }
 
     deasync.loopWhile(() => {
@@ -234,8 +280,12 @@ $wait.use('yield', (generator, value) => {
 $wait.use('generator', generator => {
     var nextValue = null;
 
-    if (typeof generator === 'function') {
+    if (generator.constructor.name === 'GeneratorFunction') {
         generator = generator();
+    }
+
+    if (typeof generator.next !== 'function'){
+        throw new Error('wait.for.generator(..) :: invalid <generator> argument ' + generator);
     }
 
     deasync.loopWhile(() => {
@@ -247,6 +297,10 @@ $wait.use('generator', generator => {
 });
 
 $wait.use('callback', (nodeAsyncFunction, ...args) => {
+    if (typeof nodeAsyncFunction !== 'function'){
+        throw new Error('wait.for.callback(..) :: invalid <nodeAsyncFunction> argument ' + nodeAsyncFunction);
+    }
+
     var isDone = false;
     var result = null;
 
@@ -260,6 +314,10 @@ $wait.use('callback', (nodeAsyncFunction, ...args) => {
 });
 
 $wait.use('function', (customAsyncFunction, ...args) => {
+    if (typeof customAsyncFunction !== 'function'){
+        throw new Error('wait.for.function(..) :: invalid <customAsyncFunction> argument ' + customAsyncFunction);
+    }
+
     var isDone = false;
     var result = null;
 
@@ -273,7 +331,37 @@ $wait.use('function', (customAsyncFunction, ...args) => {
 });
 
 $wait.use('array', (array, value) => {
+    if (!(array instanceof Array)){
+        throw new Error('wait.for.array(..) :: invalid <array> argument ' + array);
+    }
+
     deasync.loopWhile(() => !array.includes(value));
+});
+
+$wait.use('result', waitable => {
+
+    // Promise
+    if (waitable instanceof Promise){
+        return $wait.for.result( $wait.for.promise(waitable) )
+    }
+
+    // GeneratorFunction
+    if (waitable.constructor.name === 'GeneratorFunction') {
+        return $wait.for.result( $wait.for.generator(waitable) )
+    }
+
+    // Iterable
+    if (typeof waitable.next === 'function') {
+        return $wait.for.result( $wait.for.generator(waitable) )
+    }
+
+    // Stream
+    if (waitable instanceof stream.Readable){
+        return $wait.for.result( $wait.for.stream(waitable) )
+    }
+
+    // non-identifiable waitable
+    return waitable;
 });
 
 // as a convenience, we add 'condition' as an alias to 'predicate'

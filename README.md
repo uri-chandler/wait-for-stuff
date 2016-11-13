@@ -18,8 +18,7 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
 * **property** *(wait for `object.property` to exist)*
 * **array** *(wait for `array` to contain some value)*
 * **compose** *(compose a new waiter from two or more existing waiters)*
-
-*(follow-through waiters are coming soon)*
+* **result** *(wait for a chain of waitables to return a non-waitable result)*
 
 
 
@@ -49,6 +48,7 @@ Instead of waiting for **`async\await`**, you can now simply wait for the follow
     2. [`wait.alias()`](#wait-alias)
 6. [Composition](#composition)
     1. [`wait.compose()`](#wait-compose)
+    2. [`wait.for.result()`](#wait-for-result)
 7. [Contribute](#contribute)
 8. [Test](#test)
 9. [Related](#related)
@@ -494,6 +494,36 @@ var streamAndCallbackWaiter = wait.compose('stream', 'callback');
 var result                  = streamAndCallback(myComplexFunction, __filename); // arguments for wait.for.callback
 
 // result is the return value from wait.for.stream
+```
+<br /><br />
+
+
+
+
+[//]: # (----------------------------------------------------)
+[//]: # (----------------------------------------------------)
+<a id="wait-for-result">[#](#wait-for-result)</a>
+**`wait.for.result(waitable))`**  
+Waits until a chain of waitables return a non-waitable result.  
+For example, if you need to wait on a promise that returns another promise that returns a stream - you can just wait for the result of the final stream using **`wait.for.result`**.  
+
+**`waitable`** can be any of the following:
+* Promise
+* Generator *(or the iterator-result of a generaotr)*
+* Stream
+
+```javascript
+// a promise that returns a promise that returns a stream
+var myComplexPromise = new Promise((res, rej) => {
+    setTimeout(() => {
+        res(new Promise((res, rej) => {
+            setTimeout(() => res(fs.createReadStream('someFile.json')), 500);
+        }));
+    }, 500);
+});
+
+var result = wait.for.result(myComplexPromise);
+// result is now a buffer holding the contents of 'someFile.json'
 ```
 <br /><br />
 

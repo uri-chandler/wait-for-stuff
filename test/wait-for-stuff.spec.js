@@ -159,6 +159,20 @@ describe('wait-for-stuff', function(){
         myArray.should.contain('hello world');
     });
 
+    it('waits-for: result', () => {
+        // a promise that returns a promise that returns a stream
+        var myComplexPromise = new Promise((res, rej) => {
+            setTimeout(() => {
+                res(new Promise((res, rej) => {
+                    setTimeout(() => res(fs.createReadStream(__filename)), 500);
+                }));
+            }, 500);
+        });
+
+        var result = wait.for.result(myComplexPromise);
+        result.toString().should.contain('waits-for: result');
+    });
+
     it('extension: middleware', () => {
         wait.use('twoSeconds', () => {
             wait.for.time(2);
