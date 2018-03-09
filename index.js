@@ -196,12 +196,12 @@ $wait.use('property', (owner, property) => {
 });
 
 $wait.use('event', (emitter, eventName) => {
-    if (!(emitter instanceof EventEmitter)){
+    if (typeof emitter.on !== 'function' && typeof emitter.emit !== 'function'){
         throw new Error('wait.for.event(..) :: invalid <emitter> argument ' + emitter);
     }
 
     if (typeof eventName !== 'string'){
-        throw new Error('wait.for.value(..) :: invalid <eventName> argument ' + eventName);
+        throw new Error('wait.for.event(..) :: invalid <eventName> argument ' + eventName);
     }
 
     var isDone    = false;
